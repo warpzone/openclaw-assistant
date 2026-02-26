@@ -284,7 +284,9 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
     fun createNewSession() {
         if (useNodeChat) {
-            val key = "chat-${java.text.SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US).format(java.util.Date())}"
+            val agentId = _uiState.value.selectedAgentId
+            val ts = java.text.SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US).format(java.util.Date())
+            val key = if (!agentId.isNullOrBlank()) "agent:$agentId:chat-$ts" else "chat-$ts"
             nodeRuntime.switchChatSession(key)
             nodeRuntime.loadChat(key)
             nodeRuntime.refreshChatSessions()
@@ -402,16 +404,13 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     fun setAgent(agentId: String?) {
         _uiState.update { it.copy(selectedAgentId = agentId) }
         if (agentId.isNullOrBlank()) return
-        // Agent is determined by sessionKey format: "agent:<agentId>:main"
-        val sessionKey = "agent:$agentId:main"
         if (useNodeChat) {
+            // Agent is determined by sessionKey format: "agent:<agentId>:main"
+            val sessionKey = "agent:$agentId:main"
             nodeRuntime.switchChatSession(sessionKey)
             nodeRuntime.loadChat(sessionKey)
-        } else {
-            // In HTTP mode, sessionId is sent as the "user" field and determines which agent runs.
-            // Overriding it here ensures the HTTP request routes to the selected agent's session.
-            _currentSessionId.value = sessionKey
         }
+        // HTTP mode: agentId is sent via x-openclaw-agent-id header in sendViaHttp
     }
 
     private fun getEffectiveAgentId(): String? {
