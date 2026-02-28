@@ -7,8 +7,9 @@
     <string name="notification_content">Say \"%s\" to activate</string>
     <string name="default_session_title_format">Voice Session %s</string>
     <string name="chat_session_title_format">Chat %s</string>
-    <string name="error_config_required">Please configure HTTP connection</string>
+    <string name="error_config_required">Please configure connection in Settings</string>
     <string name="config_required">Configuration required</string>
+    <string name="error_gateway_not_connected">Gateway is not connected. Please check your connection settings.</string>
     <string name="state_listening">Listening...</string>
     <string name="state_processing">Processing...</string>
     <string name="state_thinking">Thinking...</string>
@@ -417,6 +418,13 @@
     <string name="tab_http">HTTP</string>
     <string name="gateway_configuration">Gateway Configuration</string>
     <string name="http_api_configuration">HTTP API Configuration</string>
+    <string name="http_ignore_ssl_errors">Ignore SSL Certificate Errors</string>
+    <string name="http_ignore_ssl_errors_desc">Allow self-signed or invalid HTTPS certificates. Use only on trusted networks.</string>
+    <string name="http_ignore_ssl_errors_warning">⚠️ Security Risk: Disabling SSL verification makes your connection vulnerable to man-in-the-middle (MITM) attacks. An attacker on the same network could intercept or tamper with your data. Only enable this if you fully trust your network and cannot install a proper certificate.</string>
+    <string name="wakeword_connection_type">Voice Session Connection</string>
+    <string name="wakeword_connection_type_desc">Choose how the voice session (long-press Home) sends messages to the assistant.</string>
+    <string name="wakeword_use_gateway">Gateway</string>
+    <string name="wakeword_use_http">HTTP</string>
     <string name="enter_session_name">Enter session name</string>
     <string name="session_name_optional">Session Name (Optional)</string>
     <string name="running_tools">Running tools</string>
