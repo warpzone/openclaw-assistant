@@ -171,6 +171,9 @@
     <string name="speech_silence_timeout_desc">Wait time after speech pause</string>
     <string name="speech_language_label">Speech Language</string>
     <string name="speech_language_desc">Language for voice recognition and responses</string>
+    <string name="display_language_label">Display Language</string>
+    <string name="display_language_desc">Language used for app screens</string>
+    <string name="display_language_system_default">System Default</string>
     <string name="conversation_section">Conversation</string>
     <string name="speech_language_system_default">System Default</string>
     <string name="speech_language_loading">Loading languages…</string>
@@ -298,6 +301,7 @@
     <string name="pairing_troubleshooting_desc">• Ensure the Server URL in Settings is correct.\n• If the command fails, check if the openclaw CLI is installed.\n• You can also manually approve using: openclaw devices approve &lt;REQUEST_ID&gt;</string>
 
     <!-- Support Section -->
+    <string name="language_section">Language</string>
     <string name="support_section">Support</string>
     <string name="report_issue">Report Issue</string>
     <string name="report_issue_desc">Found a bug or have a feature request? Let us know on GitHub.</string>
@@ -511,7 +515,7 @@
     <string name="credits_voicevox_unknown_character">スタイルID: %1$d（詳細情報なし）</string>
     <string name="credits_support_title">開発をサポートする</string>
     <string name="credits_support_description">このアプリが役に立った場合は、Ko-fiでの支援をご検討ください。</string>
-    <string name="credits_support_kofi_button">Ko-fiでサポートする</string>
+    <string name="credits_support_kofi_button">Support the Developer</string>
 
     <!-- TTS Provider Names and Descriptions -->
     <string name="tts_provider_local_name">ローカルTTS</string>

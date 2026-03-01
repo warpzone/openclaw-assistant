@@ -141,6 +141,24 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         refreshAllPermissionsStatus()
     }
 
+    override fun attachBaseContext(newBase: Context) {
+        // ComponentActivity does not participate in AppCompat's locale delegation,
+        // so we must manually apply the saved locale here. This guarantees every
+        // new instance (whether created by recreate() or a system config change)
+        // immediately has the correct locale without relying on timing.
+        val tag = try {
+            SettingsRepository.getInstance(newBase).appLanguage.trim()
+        } catch (e: Exception) { "" }
+        if (tag.isNotBlank()) {
+            val locale = java.util.Locale.forLanguageTag(tag)
+            val config = android.content.res.Configuration(newBase.resources.configuration)
+            config.setLocale(locale)
+            super.attachBaseContext(newBase.createConfigurationContext(config))
+        } else {
+            super.attachBaseContext(newBase)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         settings = SettingsRepository.getInstance(this)
@@ -351,6 +369,23 @@ class MainActivity : ComponentActivity(), TextToSpeech.OnInitListener {
         super.onResume()
         refreshMissingPermissions()
         refreshAllPermissionsStatus()
+
+        // Detect app language change made in SettingsActivity and recreate to apply it.
+        // attachBaseContext() ensures the new instance always gets the correct locale,
+        // so a single recreate() is always sufficient (no guard needed).
+        // When savedTag is blank (System Default), compare against Locale.getDefault()
+        // so that reverting from e.g. zh-CN back to system locale also triggers recreate.
+        val savedTag = SettingsRepository.getInstance(this).appLanguage.trim()
+        val displayedLanguage = resources.configuration.locales[0].language
+        val expectedLanguage = if (savedTag.isNotBlank()) {
+            java.util.Locale.forLanguageTag(savedTag).language
+        } else {
+            java.util.Locale.getDefault().language
+        }
+        if (displayedLanguage != expectedLanguage) {
+            recreate()
+            return
+        }
     }
 
     override fun onDestroy() {
