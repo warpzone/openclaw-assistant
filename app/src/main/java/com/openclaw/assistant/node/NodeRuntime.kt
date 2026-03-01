@@ -3,11 +3,13 @@ package com.openclaw.assistant.node
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.SystemClock
 import androidx.core.content.ContextCompat
 import com.openclaw.assistant.CameraHudKind
 import com.openclaw.assistant.CameraHudState
 import com.openclaw.assistant.LocationMode
+import com.openclaw.assistant.PermissionRequester
 import com.openclaw.assistant.SecurePrefs
 import com.openclaw.assistant.VoiceWakeMode
 import com.openclaw.assistant.chat.ChatController
@@ -27,6 +29,7 @@ import com.openclaw.assistant.gateway.GatewaySession
 import com.openclaw.assistant.gateway.probeGatewayTlsFingerprint
 import com.openclaw.assistant.protocol.OpenClawCanvasA2UIAction
 import com.openclaw.assistant.R
+import com.openclaw.assistant.service.OpenClawNotificationListenerService
 
 
 import kotlinx.coroutines.CoroutineScope
@@ -121,6 +124,35 @@ class NodeRuntime(context: Context) {
     sms = sms,
   )
 
+  private val notificationManager: NotificationManager = NotificationManager().also {
+    OpenClawNotificationListenerService.manager = it
+  }
+
+  private val notificationsHandler: NotificationsHandler = NotificationsHandler(
+    context = appContext,
+    notificationManager = notificationManager,
+  )
+
+  private val systemHandler: SystemHandler = SystemHandler(
+    appContext = appContext,
+  )
+
+  private val photosHandler: PhotosHandler = PhotosHandler(
+    appContext = appContext,
+  )
+
+  private val contactsHandler: ContactsHandler = ContactsHandler(
+    appContext = appContext,
+  )
+
+  private val calendarHandler: CalendarHandler = CalendarHandler(
+    appContext = appContext,
+  )
+
+  private val motionHandler: MotionHandler = MotionHandler(
+    appContext = appContext,
+  )
+
   private val a2uiHandler: A2UIHandler = A2UIHandler(
     canvas = canvas,
     json = json,
@@ -130,6 +162,7 @@ class NodeRuntime(context: Context) {
 
   private val connectionManager: ConnectionManager = ConnectionManager(
     prefs = prefs,
+    appContext = appContext,
     cameraEnabled = { cameraEnabled.value },
     locationMode = { locationMode.value },
     voiceWakeMode = { voiceWakeMode.value },
@@ -145,6 +178,12 @@ class NodeRuntime(context: Context) {
     locationHandler = locationHandler,
     screenHandler = screenHandler,
     smsHandler = smsHandlerImpl,
+    notificationsHandler = notificationsHandler,
+    systemHandler = systemHandler,
+    photosHandler = photosHandler,
+    contactsHandler = contactsHandler,
+    calendarHandler = calendarHandler,
+    motionHandler = motionHandler,
     a2uiHandler = a2uiHandler,
     debugHandler = debugHandler,
     appUpdateHandler = appUpdateHandler,
@@ -656,11 +695,20 @@ class NodeRuntime(context: Context) {
     connect(GatewayEndpoint.manual(host = host, port = port))
   }
 
+  fun attachPermissionRequester(requester: PermissionRequester) {
+    notificationsHandler.attachPermissionRequester(requester)
+    contactsHandler.attachPermissionRequester(requester)
+    calendarHandler.attachPermissionRequester(requester)
+    photosHandler.attachPermissionRequester(requester)
+    motionHandler.attachPermissionRequester(requester)
+  }
+
   fun disconnect() {
     connectedEndpoint = null
     _pendingGatewayTrust.value = null
     operatorSession.disconnect()
     nodeSession.disconnect()
+    motionHandler.close()
   }
 
   fun handleCanvasA2UIActionFromWebView(payloadJson: String) {

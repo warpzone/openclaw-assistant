@@ -97,6 +97,25 @@ class PermissionRequester(private val activity: ComponentActivity) {
       }
     }
 
+  suspend fun requestNotificationAccess() =
+    withContext(Dispatchers.Main) {
+      suspendCancellableCoroutine<Unit> { cont ->
+        AlertDialog.Builder(activity)
+          .setTitle("Notification Access Required")
+          .setMessage(
+            "OpenClaw needs notification access to read and manage your notifications. " +
+              "Tap \"Open Settings\", enable OpenClaw Assistant, then return to the app."
+          )
+          .setPositiveButton("Open Settings") { _, _ ->
+            activity.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+            cont.resume(Unit)
+          }
+          .setNegativeButton("Not now") { _, _ -> cont.resume(Unit) }
+          .setOnCancelListener { cont.resume(Unit) }
+          .show()
+      }
+    }
+
   private fun showSettingsDialog(permissions: List<String>) {
     AlertDialog.Builder(activity)
       .setTitle("Enable permission in Settings")
@@ -128,6 +147,13 @@ class PermissionRequester(private val activity: ComponentActivity) {
       Manifest.permission.CAMERA -> "Camera"
       Manifest.permission.RECORD_AUDIO -> "Microphone"
       Manifest.permission.SEND_SMS -> "SMS"
+      Manifest.permission.READ_CONTACTS -> "Contacts (read)"
+      Manifest.permission.WRITE_CONTACTS -> "Contacts (write)"
+      Manifest.permission.READ_CALENDAR -> "Calendar (read)"
+      Manifest.permission.WRITE_CALENDAR -> "Calendar (write)"
+      Manifest.permission.READ_MEDIA_IMAGES -> "Photos"
+      Manifest.permission.READ_EXTERNAL_STORAGE -> "Storage"
+      Manifest.permission.ACTIVITY_RECOGNITION -> "Activity Recognition"
       else -> permission
     }
 }
