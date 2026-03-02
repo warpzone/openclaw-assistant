@@ -220,7 +220,6 @@
     <string name="save">Сохранить</string>
     <string name="operator_offline_title">Оператор не в сети / требуется разрешение</string>
     <string name="operator_offline_message">Ваше устройство подключено, но у искусственного интеллекта нет разрешения на его управление.\n\nЗапустите следующую команду на своем сервере, чтобы предоставить доступ оператора:</string>
-    <string name="operator_offline_command">openclaw devices approve %s</string>
     <string name="operator_offline_copy">Команда копирования</string>
     <string name="operator_offline_copied">Команда скопирована в буфер обмена</string>
     <string name="operator_offline_action">Запуск на сервере</string>
