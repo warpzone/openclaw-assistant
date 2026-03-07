@@ -458,6 +458,23 @@
     <string name="voicevox_other_chars">अन्य %1$d पात्र</string>
     <string name="voicevox_size_approx_mb">लगभग %1$d MB</string>
     <string name="voicevox_size_unknown">अज्ञात</string>
+    <!-- Bottom Navigation Tabs -->
+    <string name="tab_nav_home">होम</string>
+    <string name="tab_nav_chat">चैट</string>
+    <string name="tab_nav_canvas">Canvas</string>
+    <string name="tab_nav_settings">सेटिंग्स</string>
+    <string name="canvas_placeholder_title">Canvas</string>
+    <string name="canvas_placeholder_body">Canvas AI असिस्टेंट द्वारा नियंत्रित एक डिस्प्ले क्षेत्र है। Chat में असिस्टेंट से यहाँ कुछ दिखाने के लिए कहें।</string>
+    <string name="canvas_go_to_chat">Chat पर जाएं</string>
+    <string name="canvas_chat_hint">Canvas पर क्या दिखाएं?</string>
+    <string name="canvas_chat_not_connected">चैट करने के लिए Gateway से जुड़ें</string>
+    <string name="canvas_chat_send">भेजें</string>
+    <string name="canvas_status_sending">भेज रहे हैं...</string>
+    <string name="canvas_status_thinking">सोच रहे हैं...</string>
+    <string name="canvas_status_tool">टूल का उपयोग...</string>
+    <string name="canvas_status_loading">Canvas लोड हो रहा है...</string>
+    <string name="canvas_diag_no_canvas">AI ने Canvas का उपयोग नहीं किया — नीचे टेक्स्ट प्रतिक्रिया दिखाई गई है।\nCanvas टूल उपलब्ध या सक्षम नहीं हो सकते।</string>
+    <string name="canvas_diag_not_connected">Gateway से कनेक्ट नहीं है। AI को Canvas संचालित करने देने के लिए कनेक्ट करें।</string>
     <!-- Capabilities -->
     <string name="none">कोई नहीं</string>
     <string name="capability_motion">गति</string>
