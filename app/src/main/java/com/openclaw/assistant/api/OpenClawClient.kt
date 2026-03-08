@@ -6,6 +6,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -61,7 +62,7 @@ class OpenClawClient(private val ignoreSslErrors: Boolean = false) {
         }
 
         val parsedUrl = try {
-            okhttp3.HttpUrl.get(httpUrl.trim())
+            httpUrl.trim().toHttpUrl()
         } catch (e: IllegalArgumentException) {
             return@withContext Result.failure(
                 IllegalArgumentException("Invalid server URL: ${e.message}")
