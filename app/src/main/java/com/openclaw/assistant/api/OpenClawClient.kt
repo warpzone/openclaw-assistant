@@ -60,6 +60,14 @@ class OpenClawClient(private val ignoreSslErrors: Boolean = false) {
             )
         }
 
+        val parsedUrl = try {
+            okhttp3.HttpUrl.get(httpUrl.trim())
+        } catch (e: IllegalArgumentException) {
+            return@withContext Result.failure(
+                IllegalArgumentException("Invalid server URL: ${e.message}")
+            )
+        }
+
         try {
             // OpenAI Chat Completions format for /v1/chat/completions
             val requestBody = JsonObject().apply {
@@ -99,7 +107,7 @@ class OpenClawClient(private val ignoreSslErrors: Boolean = false) {
                 .toRequestBody("application/json; charset=utf-8".toMediaType())
 
             val requestBuilder = Request.Builder()
-                .url(httpUrl)
+                .url(parsedUrl)
                 .post(jsonBody)
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Accept", "application/json")
